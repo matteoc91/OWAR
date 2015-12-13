@@ -9,7 +9,7 @@ public class RouteController {
 
     @RequestMapping(value = "/")
     public ModelAndView getHomePage() {
-        ModelAndView mv = new ModelAndView("home");
+        ModelAndView mv = new ModelAndView("homePage");
         return mv;
     }
 	
