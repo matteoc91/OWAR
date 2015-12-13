@@ -7,10 +7,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class RouteController {
 
-	@RequestMapping(value = "/")
-	public ModelAndView getHomePage() {
-		ModelAndView mv = new ModelAndView("home");
-		return mv;
-	}
+    @RequestMapping(value = "/")
+    public ModelAndView getHomePage() {
+        ModelAndView mv = new ModelAndView("home");
+        return mv;
+    }
 	
 }
