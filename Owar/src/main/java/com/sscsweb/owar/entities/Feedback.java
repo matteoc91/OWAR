@@ -3,7 +3,7 @@ package com.sscsweb.owar.entities;
 public class Feedback {
 
 	private Integer id;
-	private Double office_valuation;
+	private Integer office_valuation;
 	private String comment;
 	private Integer office_id;
 	
@@ -15,11 +15,11 @@ public class Feedback {
 		this.id = id;
 	}
 
-	public Double getOffice_valuation() {
+	public Integer getOffice_valuation() {
 		return office_valuation;
 	}
 
-	public void setOffice_valuation(Double office_valuation) {
+	public void setOffice_valuation(Integer office_valuation) {
 		this.office_valuation = office_valuation;
 	}
 

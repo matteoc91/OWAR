@@ -14,7 +14,7 @@ public class FeedbackMapper implements RowMapper<Feedback> {
 		feedback.setComment(arg0.getString("comment"));
 		feedback.setId(arg0.getInt("id"));
 		feedback.setOffice_id(arg0.getInt("office_id"));
-		feedback.setOffice_valuation(arg0.getDouble("office_valuation"));
+		feedback.setOffice_valuation(arg0.getInt("office_valuation"));
 		return feedback;
 	}
 
