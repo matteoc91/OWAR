@@ -4,7 +4,10 @@
 		<jsp:include page="headComponent.jsp" />
 	</head>
 	<body>
-	    <jsp:include page="hiddenComponent.jsp" />
-		<jsp:include page="menuComponent.jsp" />
+		<div class="wrap">
+			<jsp:include page="hiddenComponent.jsp" />
+			<jsp:include page="menuComponent.jsp" />
+		</div>
+	    <jsp:include page="footerComponent.jsp" />
 	</body>
 </html>

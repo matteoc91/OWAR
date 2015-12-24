@@ -1,7 +1,19 @@
+html, body {
+  height: 100%; }
+
 .hiddenMsg {
   display: none; }
 
 .topMenu {
   border-radius: 0 !important; }
+
+.wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto -60px;
+  padding: 0 0 60px; }
+
+.footer {
+  height: 60px; }
 
 /*# sourceMappingURL=style.css.map */

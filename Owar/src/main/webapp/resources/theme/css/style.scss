@@ -1,7 +1,24 @@
+$fixed_footer_height : 60px;
+
+html, body {
+	height: 100%;
+}
+
 .hiddenMsg {
 	display: none;
 }
 
 .topMenu {
 	border-radius: 0 !important;
+}
+
+.wrap {
+	min-height: 100%;
+	height: auto;
+	margin: 0 auto (-$fixed_footer_height);
+	padding: 0 0 $fixed_footer_height;
+}
+
+.footer {
+	height: $fixed_footer_height;
 }
