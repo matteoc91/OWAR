@@ -1,5 +1,5 @@
 function registration() {
-	if($("#userMail").val().length > 0 && $("#userPassword").val().length > 7 && $("#userConfirmPassword").val().length > 7) {
+	if($("#userMail").val().length > 0 && $("#userPassword").val().length > 0 && $("#userConfirmPassword").val().length > 0) {
 		if(Validator.validateEmail($("#userMail").val())) {
 			if($("#userPassword").val().length > 7) {
 				if($("#userPassword").val() == $("#userConfirmPassword").val()) {
