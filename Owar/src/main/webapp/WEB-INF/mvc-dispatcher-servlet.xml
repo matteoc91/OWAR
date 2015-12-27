@@ -79,5 +79,9 @@
 	<bean id="UserDAOImpl" class="com.sscsweb.owar.jdbc.dao.UserDAOImpl">
       <property name="dataSource"  ref="dataSource" />
 	</bean>
+	
+	<!-- EJBs initializations -->
+	
+	<jee:local-slsb id="UserBean" jndi-name="java:module/UserBeanImpl" business-interface="com.sscsweb.owar.sessionBean.UserBean" />
 
 </beans>

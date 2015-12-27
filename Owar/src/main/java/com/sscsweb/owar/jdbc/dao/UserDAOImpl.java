@@ -4,16 +4,29 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.sscsweb.owar.entities.User;
 import com.sscsweb.owar.jdbc.mappers.UserMapper;
+import com.sscsweb.owar.sessionBean.UserBean;
 import com.sscsweb.owar.utilities.Chiper;
 
 public class UserDAOImpl implements UserDAO {
 
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplateObject;
+	
+	@Autowired
+	private UserBean userBean;
+	
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+	}
 	
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -39,13 +52,14 @@ public class UserDAOImpl implements UserDAO {
 		String query = "SELECT * FROM user WHERE mail = ?";
 		int result = -1;
 		try {
-			User userBean = this.jdbcTemplateObject.queryForObject(
+			User dbUser = this.jdbcTemplateObject.queryForObject(
 					query, new Object[] { user.getMail() }, new UserMapper());
-			if(userBean != null) {
-				if(Chiper.checkPassword(user.getPassword(), userBean.getPassword())) {
+			if(dbUser != null) {
+				if(Chiper.checkPassword(user.getPassword(), dbUser.getPassword())) {
 					/*
 					 * TODO - implement ejb
 					 * */
+					userBean.setUser(dbUser);
 					result = 1;
 				}
 			}
