@@ -18,5 +18,11 @@ public class RouteController {
     	ModelAndView mv = new ModelAndView("registrationPage");
     	return mv;
     }
+    
+    @RequestMapping(value = "/loginPage")
+    public ModelAndView getLoginPage() {
+    	ModelAndView mv = new ModelAndView("loginPage");
+    	return mv;
+    }
 	
 }

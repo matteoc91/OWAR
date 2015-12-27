@@ -9,9 +9,15 @@ $(document).ready(function() {
 		});
 	}
 	
-	if(("#resetBtn").length > 0) {
+	if($("#resetBtn").length > 0) {
 		$("#resetBtn").click(function() {
 			resetFields("userInput");
+		});
+	}
+	
+	if($("#loginBtn").length > 0) {
+		$("#loginBtn").click(function() {
+			login();
 		});
 	}
 	

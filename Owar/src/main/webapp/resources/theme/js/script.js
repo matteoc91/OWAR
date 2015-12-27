@@ -54,3 +54,34 @@ function resetFields(fields) {
 	$("#successMsg").hide();
 	$("input[class="+fields+"]").val("");
 }
+
+function login() {
+	if($("#userMail").val().length > 0 && $("#userPassword").val().length > 0) {
+		if(Validator.validateEmail($("#userMail").val())) {
+			var user = {};
+			user.mail = $("#userMail").val();
+			user.password = $("#userPassword").val();
+			$.ajax({
+				url : $("#contextpath").val()+"/user/login",
+				type : "POST",
+				data : {
+					user : JSON.stringify(user)
+				},
+				success : function(res) {
+					if(res == 1) {
+						displaySuccessMessage("<strong>Success!</strong> User login OK.");
+					} else {
+						displayErrorMessage("<strong>Error!</strong> Wrong email or password.");
+					}
+				},
+				error : function(res) {
+					displayErrorMessage("<strong>Error!</strong> Unable to login user.");
+				}
+			});
+		} else {
+			displayErrorMessage("<strong>Error!</strong> Email not valid.");
+		}
+	} else {
+		displayErrorMessage("<strong>Error!</strong> Compile all fields.");
+	}
+}

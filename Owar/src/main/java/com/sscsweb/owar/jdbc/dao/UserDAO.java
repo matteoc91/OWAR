@@ -5,5 +5,6 @@ import com.sscsweb.owar.entities.User;
 public interface UserDAO {
 
 	public int registration(User user);
+	public int login(User user);
 	
 }

@@ -81,12 +81,17 @@
 		<artifactId>spring-jdbc</artifactId>
 		<version>4.2.2.RELEASE</version>
 	</dependency>
-	
-	
-	
-	
-    
-    
+
+
+
+
+
+
+    <dependency>
+    	<groupId>org.jasypt</groupId>
+    	<artifactId>jasypt</artifactId>
+    	<version>1.9.2</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>Owar</finalName>

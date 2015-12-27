@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sscsweb.owar.entities.User;
 import com.sscsweb.owar.jdbc.dao.UserDAO;
+import com.sscsweb.owar.utilities.Chiper;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -34,7 +35,26 @@ public class UserController {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			User user = mapper.readValue(json, User.class);
+			user.setPassword(Chiper.encryptPassword(user.getPassword()));
 			return this.userDAO.registration(user);
+		
+		} catch (JsonParseException e) {
+			
+		} catch (JsonMappingException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return -1;
+	}
+	
+	@RequestMapping(value = "/login")
+	public int userLogin(@RequestParam("user") String json) {
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			User user = mapper.readValue(json, User.class);
+			return this.userDAO.login(user);
 		
 		} catch (JsonParseException e) {
 			
