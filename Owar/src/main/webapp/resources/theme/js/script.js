@@ -70,6 +70,8 @@ function login() {
 				success : function(res) {
 					if(res == 1) {
 						displaySuccessMessage("<strong>Success!</strong> User login OK.");
+						window.location.href  = $("#contextpath").val();
+							
 					} else {
 						displayErrorMessage("<strong>Error!</strong> Wrong email or password.");
 					}
