@@ -7,6 +7,7 @@
 		<div class="wrap">
 			<jsp:include page="hiddenComponent.jsp" />
 			<jsp:include page="menuComponent.jsp" />
+			<script type="IN/Login"></script>
 		</div>
 	    <jsp:include page="footerComponent.jsp" />
 	</body>
