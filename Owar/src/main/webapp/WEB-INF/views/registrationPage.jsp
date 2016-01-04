@@ -12,13 +12,13 @@
 				<div id="errorMsg" class="alert alert-danger hiddenMsg"></div>
 				<div id="successMsg" class="alert alert-success hiddenMsg"></div>
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-md-4">
 						<span class="text-info">Email (*)</span>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-md-4">
 						<input type="text" id="userMail" class="userInput">
 					</div>
-					<div class="col-sm-4"></div>
+					<div class="col-md-4"></div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
