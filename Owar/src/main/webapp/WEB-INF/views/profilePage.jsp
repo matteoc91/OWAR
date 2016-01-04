@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Home Page</title>
+		<title>Profile Page</title>
 		<jsp:include page="headComponent.jsp" />
 	</head>
 	<body>

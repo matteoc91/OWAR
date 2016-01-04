@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	
+	$("a[href='#']").click(function(event) {
+		event.preventDefault();
+	});
+	
 	var currentPage = window.location.pathname;
 	$(".navbarToActive a[href='"+currentPage+"']").parent().addClass("active");
 	
@@ -18,6 +22,12 @@ $(document).ready(function() {
 	if($("#loginBtn").length > 0) {
 		$("#loginBtn").click(function() {
 			login();
+		});
+	}
+	
+	if($("#logoutBtn").length > 0) {
+		$("#logoutBtn").click(function() {
+			logout();
 		});
 	}
 	

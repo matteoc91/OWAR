@@ -6,6 +6,7 @@ function registration() {
 					var user = {};
 					user.mail = $("#userMail").val();
 					user.password = $("#userPassword").val();
+					$("#registrationBtn").html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...");
 					$.ajax({
 						url : $("#contextpath").val()+"/user/registration",
 						type : "POST",
@@ -14,12 +15,22 @@ function registration() {
 						},
 						success : function(res) {
 							if(res == 1) {
+								$("#registrationBtn").html("Register");
 								displaySuccessMessage("<strong>Success!</strong> User registration OK.");
+								$("#genericModal .modal-title").html("Confirmation mail");
+								$("#genericModal .modal-body p").html("An email was sent to verify your account. " +
+										"Please check it to complete your registration.");
+								$("#genericModal").modal("toggle");
+								$("#genericModal").on("hidden.bs.modal", function(e) {
+									window.location.href = $("#contextpath").val();
+								});
 							} else {
+								$("#registrationBtn").html("Register");
 								displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
 							}
 						},
 						error : function(res) {
+							$("#registrationBtn").html("Register");
 							displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
 						}
 					});
@@ -71,7 +82,6 @@ function login() {
 					if(res == 1) {
 						displaySuccessMessage("<strong>Success!</strong> User login OK.");
 						window.location.href  = $("#contextpath").val();
-							
 					} else {
 						displayErrorMessage("<strong>Error!</strong> Wrong email or password.");
 					}
@@ -86,4 +96,17 @@ function login() {
 	} else {
 		displayErrorMessage("<strong>Error!</strong> Compile all fields.");
 	}
+}
+
+function logout() {
+	$.ajax({
+		url : $("#contextpath").val()+"/user/logout",
+		type : "POST",
+		success : function(res) {
+			window.location.href = $("#contextpath").val();
+		},
+		error : function(res) {
+			console.log("[ERROR] - unable to logout!");
+		}
+	});
 }

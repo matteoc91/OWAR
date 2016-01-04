@@ -2,6 +2,7 @@ package com.sscsweb.owar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,16 +23,26 @@ public class RouteController {
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
 	}
+	
+	/* SET SESSION DATA */
+	
+	@ModelAttribute("userBean")
+	public String addUserToSession() {
+		String user = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			user = mapper.writeValueAsString(userBean.getUser());
+		} catch (JsonProcessingException e) {
+			user = null;
+		}
+		return user;
+	}
+	
+	/* -------- */
 
     @RequestMapping(value = "/")
     public ModelAndView getHomePage() {
-    	ObjectMapper mapper = new ObjectMapper();
-        ModelAndView mv = new ModelAndView("homePage");
-        try {
-			mv.addObject("userBean", mapper.writeValueAsString(userBean.getUser()));
-		} catch (JsonProcessingException e) {
-			mv.addObject("userBean", null);
-		}
+    	ModelAndView mv = new ModelAndView("homePage");
         return mv;
     }
     
@@ -44,6 +55,18 @@ public class RouteController {
     @RequestMapping(value = "/loginPage")
     public ModelAndView getLoginPage() {
     	ModelAndView mv = new ModelAndView("loginPage");
+    	return mv;
+    }
+    
+    @RequestMapping(value = "/socialPage")
+    public ModelAndView getSocialPage() {
+    	ModelAndView mv = new ModelAndView("socialPage");
+    	return mv;
+    }
+    
+    @RequestMapping(value = "/profilePage")
+    public ModelAndView getProfilePage() {
+    	ModelAndView mv = new ModelAndView("profilePage");
     	return mv;
     }
 	

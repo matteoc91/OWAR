@@ -34,11 +34,16 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	public int registration(User user) {
+		if(getUserFromEmail(user.getMail()) != null) {
+			return -1;
+		}
+		
 		String query = "INSERT INTO "
 				+ "user(mail, password, comune_id, name, surname, tax_code, address, house_number, phone_number, birth_date) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		int result = -1;
 		try {
+			user.setPassword(Chiper.encryptPassword(user.getPassword()));
 			result = this.jdbcTemplateObject.update(query, user.getMail(), user.getPassword(), user.getComune_id(), user.getName(), 
 					user.getSurname(), user.getTax_code(), user.getAddress(), user.getHouse_number(), user.getPhone_number(), user.getBirth_date());
 		} catch(Exception e) {
@@ -56,9 +61,6 @@ public class UserDAOImpl implements UserDAO {
 					query, new Object[] { user.getMail() }, new UserMapper());
 			if(dbUser != null) {
 				if(Chiper.checkPassword(user.getPassword(), dbUser.getPassword())) {
-					/*
-					 * TODO - implement ejb
-					 * */
 					userBean.setUser(dbUser);
 					result = 1;
 				}
@@ -68,6 +70,17 @@ public class UserDAOImpl implements UserDAO {
 		}
 		
 		return result;
+	}
+	
+	public User getUserFromEmail(String email) {
+		String query = "SELECT * FROM user WHERE mail = ?";
+		try {
+			User dbUser = this.jdbcTemplateObject.queryForObject(
+					query, new Object[] { email }, new UserMapper());
+			return dbUser;
+		} catch(Exception e) {
+			return null;
+		}
 	}
 	
 }
