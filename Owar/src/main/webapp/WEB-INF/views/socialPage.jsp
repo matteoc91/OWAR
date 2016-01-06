@@ -21,7 +21,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-12" id="socialLoginSection">
 								<script type="in/Login"></script>
 							</div>
 						</div>

@@ -1,3 +1,74 @@
+function regitrationRequest(user, next, failure) {
+	$.ajax({
+		url : $("#contextpath").val()+"/user/registration",
+		type : "POST",
+		data : {
+			user : JSON.stringify(user)
+		},
+		success : function(res) {
+			if(res == 1) {
+				displaySuccessMessage("<strong>Success!</strong> User registration OK.");
+				$("#genericModal .modal-title").html("Confirmation mail");
+				$("#genericModal .modal-body p").html("An email was sent to verify your account. " +
+						"Please check it to complete your registration.");
+				$("#genericModal").modal("toggle");
+				$("#genericModal").on("hidden.bs.modal", function(e) {
+					window.location.href = $("#contextpath").val();
+				});
+				if(next != null) {
+					next(res);
+				}
+			} else {
+				displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+				if(failure != null) {
+					failure(res);
+				}
+			}
+		},
+		error : function(res) {
+			displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+			if(failure != null) {
+				failure(res);
+			}
+		}
+	});
+}
+
+function socialLoginRequest(user, next, failure) {
+	$.ajax({
+		url : $("#contextpath").val()+"/user/socialLogin",
+		type : "POST",
+		data : {
+			user : JSON.stringify(user)
+		},
+		success : function(res) {
+			if(res == 1) {
+				displaySuccessMessage("<strong>Success!</strong> User login OK.");
+				$("#genericModal .modal-title").html("Login success");
+				$("#genericModal .modal-body p").html("Thank you for login in OWAR using LinkdIn.");
+				$("#genericModal").modal("toggle");
+				$("#genericModal").on("hidden.bs.modal", function(e) {
+					window.location.href = $("#contextpath").val();
+				});
+				if(next != null) {
+					next(res);
+				}
+			} else {
+				displayErrorMessage("<strong>Error!</strong> Unable to login user.");
+				if(failure != null) {
+					failure(res);
+				}
+			}
+		},
+		error : function(res) {
+			displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+			if(failure != null) {
+				failure(res);
+			}
+		}
+	});
+}
+
 function registration() {
 	if($("#userMail").val().length > 0 && $("#userPassword").val().length > 0 && $("#userConfirmPassword").val().length > 0) {
 		if(Validator.validateEmail($("#userMail").val())) {
@@ -7,32 +78,10 @@ function registration() {
 					user.mail = $("#userMail").val();
 					user.password = $("#userPassword").val();
 					$("#registrationBtn").html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...");
-					$.ajax({
-						url : $("#contextpath").val()+"/user/registration",
-						type : "POST",
-						data : {
-							user : JSON.stringify(user)
-						},
-						success : function(res) {
-							if(res == 1) {
-								$("#registrationBtn").html("Register");
-								displaySuccessMessage("<strong>Success!</strong> User registration OK.");
-								$("#genericModal .modal-title").html("Confirmation mail");
-								$("#genericModal .modal-body p").html("An email was sent to verify your account. " +
-										"Please check it to complete your registration.");
-								$("#genericModal").modal("toggle");
-								$("#genericModal").on("hidden.bs.modal", function(e) {
-									window.location.href = $("#contextpath").val();
-								});
-							} else {
-								$("#registrationBtn").html("Register");
-								displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
-							}
-						},
-						error : function(res) {
-							$("#registrationBtn").html("Register");
-							displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
-						}
+					regitrationRequest(user, function(res) {
+						$("#registrationBtn").html("Register");
+					}, function(res) {
+						$("#registrationBtn").html("Register");
 					});
 				} else {
 					displayErrorMessage("<strong>Error!</strong> Passwords mismatch.");

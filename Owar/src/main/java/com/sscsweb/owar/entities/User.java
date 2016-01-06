@@ -15,6 +15,8 @@ public class User {
 	private Integer house_number;
 	private String phone_number;
 	private Date birth_date;
+	private String twitter_id;
+	private Integer valid;
 	
 	public Integer getId() {
 		return id;
@@ -102,6 +104,22 @@ public class User {
 
 	public void setBirth_date(Date birth_date) {
 		this.birth_date = birth_date;
+	}
+
+	public String getTwitter_id() {
+		return twitter_id;
+	}
+
+	public void setTwitter_id(String twitter_id) {
+		this.twitter_id = twitter_id;
+	}
+
+	public Integer getValid() {
+		return valid;
+	}
+
+	public void setValid(Integer valid) {
+		this.valid = valid;
 	}
 	
 }

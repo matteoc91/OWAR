@@ -5,4 +5,6 @@ public interface Constant {
 	public static final String EMAIL_FROM = "matteo.cristoforo@gmail.com";
 	public static final String EMAIL_SUBJECT_REGISTRATION = "OWAR - Registration";
 	
+	public static final String ENCRYPTION_PASSWORD = "encryptionPassword";
+	
 }

@@ -2,6 +2,8 @@ package com.sscsweb.owar.controllers;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +80,35 @@ public class UserController {
 	@RequestMapping(value = "/logout")
 	public int userLogout() {
 		return this.userService.logout() ? 1 : -1;
+	}
+	
+	@RequestMapping(value = "/validate")
+	public void userValidation(@RequestParam("token") String token, HttpServletResponse response) {
+		this.userService.validate(token);
+		try {
+			response.sendRedirect("http://localhost:8080/Owar");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+	}
+	
+	@RequestMapping(value = "/socialLogin")
+	public int socialLogin(@RequestParam("user") String json) {
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			User user = mapper.readValue(json, User.class);
+			return this.userService.socialLogin(user) ? 1 : -1;
+		
+		} catch (JsonParseException e) {
+			
+		} catch (JsonMappingException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return -1;
 	}
 	
 }

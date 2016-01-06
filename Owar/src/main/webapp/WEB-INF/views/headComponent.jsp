@@ -4,7 +4,7 @@
     authorize: true
 </script>
 
-<jsp:include page="session.jsp" />
+<jsp:include page="sessionComponent.jsp" />
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/listener.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
