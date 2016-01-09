@@ -1,33 +1,21 @@
 package com.sscsweb.owar.jdbc.dao;
 
-import java.util.List;
-
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.sscsweb.owar.entities.User;
 import com.sscsweb.owar.jdbc.mappers.UserMapper;
-import com.sscsweb.owar.sessionBean.UserBean;
 import com.sscsweb.owar.utilities.Chiper;
+import com.sscsweb.owar.utilities.ResponseCode;
+import com.sscsweb.owar.utilities.ResponseMessage;
+import com.sscsweb.owar.utilities.ResponseStatus;
 
 public class UserDAOImpl implements UserDAO {
 
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplateObject;
-	
-	@Autowired
-	private UserBean userBean;
-	
-	public UserBean getUserBean() {
-		return userBean;
-	}
 
-	public void setUserBean(UserBean userBean) {
-		this.userBean = userBean;
-	}
-	
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
@@ -35,62 +23,59 @@ public class UserDAOImpl implements UserDAO {
 
 	public int registration(User user) {
 		if(getUserFromEmail(user.getMail()) != null) {
-			return -1;
+			return ResponseCode.ALREADY_EXIST;
 		}
 		
 		String query = "INSERT INTO "
 				+ "user(mail, password, comune_id, name, surname, tax_code, address, house_number, phone_number, birth_date, twitter_id, valid) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		int result = -1;
 		try {
 			if(user.getPassword() != null) {
 				user.setPassword(Chiper.encryptPassword(user.getPassword()));
 			}
-			result = this.jdbcTemplateObject.update(query, user.getMail(), user.getPassword(), user.getComune_id(), user.getName(), 
+			return this.jdbcTemplateObject.update(query, user.getMail(), user.getPassword(), user.getComune_id(), user.getName(), 
 					user.getSurname(), user.getTax_code(), user.getAddress(), user.getHouse_number(), user.getPhone_number(), user.getBirth_date(), 
 					user.getTwitter_id(), user.getValid());
 		} catch(Exception e) {
-			result = -1;
+			return ResponseCode.DB_ACCESS_ERROR;
 		}
-		
-		return result;
 	}
 	
-	public int login(User user) {
+	public ResponseMessage login(User user) {
 		String query = "SELECT * FROM user WHERE mail = ?";
 		String param = user.getMail();
 		if(user.getTwitter_id() != null) {
 			query = "SELECT * FROM user WHERE twitter_id = ?";
 			param = user.getTwitter_id();
 		}
-		int result = -1;
 		try {
 			User dbUser = this.jdbcTemplateObject.queryForObject(
 					query, new Object[] { param }, new UserMapper());
 			if(dbUser != null && dbUser.getValid() != null && dbUser.getValid() == 1) {
 				if(dbUser.getTwitter_id() != null) {
-					result = 1;
+					return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 				}
 				else if(Chiper.checkPassword(user.getPassword(), dbUser.getPassword())) {
-					userBean.setUser(dbUser);
-					result = 1;
+					return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
+				} else {
+					return new ResponseMessage(ResponseCode.WRONG_CREDENTIALS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WRONG_CREDENTIALS), null);
 				}
+			} else {
+				return new ResponseMessage(ResponseCode.NOT_VALID, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_VALID), null);
 			}
 		} catch(Exception e) {
-			result = -1;
+			return new ResponseMessage(ResponseCode.NOT_FOUND, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_FOUND), null);
 		}
-		
-		return result;
 	}
 	
-	public User getUserFromEmail(String email) {
+	public ResponseMessage getUserFromEmail(String email) {
 		String query = "SELECT * FROM user WHERE mail = ?";
 		try {
 			User dbUser = this.jdbcTemplateObject.queryForObject(
 					query, new Object[] { email }, new UserMapper());
-			return dbUser;
+			return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 		} catch(Exception e) {
-			return null;
+			return new ResponseMessage(ResponseCode.NOT_FOUND, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_FOUND), null);
 		}
 	}
 	
@@ -99,29 +84,29 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			return this.jdbcTemplateObject.update(query, email);
 		} catch(Exception e) {
-			return -1;
+			return ResponseCode.NOT_FOUND;
 		}
 	}
 	
-	public int socialLogin(User user) {
+	public ResponseMessage socialLogin(User user) {
 		String query = "SELECT * FROM user WHERE twitter_id = ?";
 		try {
 			User dbUser = this.jdbcTemplateObject.queryForObject(
 					query, new Object[] { user.getTwitter_id() }, new UserMapper());
-			userBean.setUser(dbUser);
-			return 1;
+			return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 		} catch(Exception e) {
 			try {
-				if(registration(user) == 1) {
+				int response = registration(user);
+				if(response == ResponseCode.SUCCESS) {
 					User dbUser = this.jdbcTemplateObject.queryForObject(
 							query, new Object[] { user.getTwitter_id() }, new UserMapper());
-					userBean.setUser(dbUser);
-					return 1;
+					return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
+				} else {
+					return new ResponseMessage(response, ResponseStatus.STATUS_MESSAGE.get(response), null);
 				}
 			} catch(Exception internalException) {
-				
+				return new ResponseMessage(ResponseCode.DB_ACCESS_ERROR, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.DB_ACCESS_ERROR), null);
 			}
-			return -1;
 		}
 	}
 	

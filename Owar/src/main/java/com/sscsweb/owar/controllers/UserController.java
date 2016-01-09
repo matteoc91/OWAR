@@ -2,6 +2,7 @@ package com.sscsweb.owar.controllers;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sscsweb.owar.entities.User;
 import com.sscsweb.owar.jdbc.dao.UserDAO;
 import com.sscsweb.owar.services.UserService;
+import com.sscsweb.owar.utilities.ResponseCode;
+import com.sscsweb.owar.utilities.ResponseMessage;
+import com.sscsweb.owar.utilities.ResponseStatus;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -24,6 +28,8 @@ public class UserController {
 	private UserDAO userDAO;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ServletContext servletContext;
 	
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
@@ -41,13 +47,22 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+
 	@RequestMapping(value = "/registration")
-	public int userRegistration(@RequestParam("user") String json) {
+	public ResponseMessage userRegistration(@RequestParam("user") String json) {
 		try {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			User user = mapper.readValue(json, User.class);
-			return this.userService.register(user) ? 1 : -1;
+			int result = this.userService.register(user);
+			return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
 		
 		} catch (JsonParseException e) {
 			
@@ -56,16 +71,16 @@ public class UserController {
 		} catch (IOException e) {
 			
 		}
-		return -1;
+		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
 	}
 	
 	@RequestMapping(value = "/login")
-	public int userLogin(@RequestParam("user") String json) {
+	public ResponseMessage userLogin(@RequestParam("user") String json) {
 		try {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			User user = mapper.readValue(json, User.class);
-			return this.userService.login(user) ? 1 : -1;
+			return this.userService.login(user);
 		
 		} catch (JsonParseException e) {
 			
@@ -74,19 +89,20 @@ public class UserController {
 		} catch (IOException e) {
 			
 		}
-		return -1;
+		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
 	}
 	
 	@RequestMapping(value = "/logout")
-	public int userLogout() {
-		return this.userService.logout() ? 1 : -1;
+	public ResponseMessage userLogout() {
+		int result = this.userService.logout();
+		return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
 	}
 	
 	@RequestMapping(value = "/validate")
 	public void userValidation(@RequestParam("token") String token, HttpServletResponse response) {
 		this.userService.validate(token);
 		try {
-			response.sendRedirect("http://localhost:8080/Owar");
+			response.sendRedirect("http://localhost:8080/" + servletContext.getContextPath() + "?isValidated=true");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,12 +110,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/socialLogin")
-	public int socialLogin(@RequestParam("user") String json) {
+	public ResponseMessage socialLogin(@RequestParam("user") String json) {
 		try {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			User user = mapper.readValue(json, User.class);
-			return this.userService.socialLogin(user) ? 1 : -1;
+			return this.userService.socialLogin(user);
 		
 		} catch (JsonParseException e) {
 			
@@ -108,7 +124,7 @@ public class UserController {
 		} catch (IOException e) {
 			
 		}
-		return -1;
+		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
 	}
 	
 }

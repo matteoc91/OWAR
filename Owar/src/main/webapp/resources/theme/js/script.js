@@ -6,7 +6,7 @@ function regitrationRequest(user, next, failure) {
 			user : JSON.stringify(user)
 		},
 		success : function(res) {
-			if(res == 1) {
+			if(res.responseCode == 1) {
 				displaySuccessMessage("<strong>Success!</strong> User registration OK.");
 				$("#genericModal .modal-title").html("Confirmation mail");
 				$("#genericModal .modal-body p").html("An email was sent to verify your account. " +
@@ -19,14 +19,14 @@ function regitrationRequest(user, next, failure) {
 					next(res);
 				}
 			} else {
-				displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+				displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 				if(failure != null) {
 					failure(res);
 				}
 			}
 		},
 		error : function(res) {
-			displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+			displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 			if(failure != null) {
 				failure(res);
 			}
@@ -42,7 +42,7 @@ function socialLoginRequest(user, next, failure) {
 			user : JSON.stringify(user)
 		},
 		success : function(res) {
-			if(res == 1) {
+			if(res.responseCode == 1) {
 				displaySuccessMessage("<strong>Success!</strong> User login OK.");
 				$("#genericModal .modal-title").html("Login success");
 				$("#genericModal .modal-body p").html("Thank you for login in OWAR using LinkdIn.");
@@ -54,14 +54,14 @@ function socialLoginRequest(user, next, failure) {
 					next(res);
 				}
 			} else {
-				displayErrorMessage("<strong>Error!</strong> Unable to login user.");
+				displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 				if(failure != null) {
 					failure(res);
 				}
 			}
 		},
 		error : function(res) {
-			displayErrorMessage("<strong>Error!</strong> Unable to register the new user.");
+			displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 			if(failure != null) {
 				failure(res);
 			}
@@ -118,6 +118,7 @@ function resetFields(fields) {
 function login() {
 	if($("#userMail").val().length > 0 && $("#userPassword").val().length > 0) {
 		if(Validator.validateEmail($("#userMail").val())) {
+			$("#loginBtn").html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...");
 			var user = {};
 			user.mail = $("#userMail").val();
 			user.password = $("#userPassword").val();
@@ -128,15 +129,18 @@ function login() {
 					user : JSON.stringify(user)
 				},
 				success : function(res) {
-					if(res == 1) {
+					if(res.responseCode == 1) {
 						displaySuccessMessage("<strong>Success!</strong> User login OK.");
+						$("#loginBtn").html("Login");
 						window.location.href  = $("#contextpath").val();
 					} else {
-						displayErrorMessage("<strong>Error!</strong> Wrong email or password.");
+						$("#loginBtn").html("Login");
+						displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 					}
 				},
 				error : function(res) {
-					displayErrorMessage("<strong>Error!</strong> Unable to login user.");
+					$("#loginBtn").html("Login");
+					displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 				}
 			});
 		} else {
@@ -156,6 +160,8 @@ function logout() {
 		},
 		error : function(res) {
 			console.log("[ERROR] - unable to logout!");
+			console.log("[ERROR] - ResponseCode: " + res.responseCode);
+			console.log("[ERROR] - ResponseStatus: " + res.responseStatus);
 		}
 	});
 }

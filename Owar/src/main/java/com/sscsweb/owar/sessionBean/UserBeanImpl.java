@@ -2,13 +2,21 @@ package com.sscsweb.owar.sessionBean;
 
 import java.rmi.RemoteException;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.sscsweb.owar.entities.User;
 
+@Component
+@Scope("session")
+@EJB(name="java:module/UserBeanImpl", beanInterface=UserBean.class)
 @Stateful
 public class UserBeanImpl implements UserBean, SessionBean {
 

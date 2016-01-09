@@ -1,5 +1,7 @@
 package com.sscsweb.owar.controllers;
 
+import javax.enterprise.context.SessionScoped;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +16,7 @@ import com.sscsweb.owar.sessionBean.UserBean;
 public class RouteController {
 	
 	@Autowired
+	@SessionScoped
 	private UserBean userBean;
 	
 	public UserBean getUserBean() {
