@@ -13,6 +13,7 @@ import com.sscsweb.owar.utilities.Chiper;
 import com.sscsweb.owar.utilities.Constant;
 import com.sscsweb.owar.utilities.ResponseCode;
 import com.sscsweb.owar.utilities.ResponseMessage;
+import com.sscsweb.owar.utilities.ResponseStatus;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,29 +66,29 @@ public class UserServiceImpl implements UserService {
 		return reponseMessage;
 	}
 
-	public int register(User user) {
+	public ResponseMessage register(User user) {
 		ResponseMessage responseMessage = this.userDAO.getUserFromEmail(user.getMail());
 		if(responseMessage.getResponseCode() != ResponseCode.SUCCESS) {
 			String body = "Hello, we are happy to meet you. Please follow this link to complete your registration: ";
 			String token = Chiper.encryptText(user.getMail());
 			String context = this.servletContext.getContextPath();
-			body += "http://localhost:8080" + context + "/user/validate?token=" + token;
+			body += Constant.DEFAULT_URL + context + "/user/validate?token=" + token;
 			boolean result = this.mailService.sendMail(Constant.EMAIL_FROM, new String[]{user.getMail()}, body, Constant.EMAIL_SUBJECT_REGISTRATION);
 			if(result) {
 				return this.userDAO.registration(user);
 			} else {
-				return ResponseCode.MAIL_SEND_FAILURE;
+				return new ResponseMessage(ResponseCode.MAIL_SEND_FAILURE, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.MAIL_SEND_FAILURE), null);
 			}
 		}
-		return ResponseCode.ALREADY_EXIST;
+		return new ResponseMessage(ResponseCode.ALREADY_EXIST, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.ALREADY_EXIST), null);
 	}
 	
-	public int logout() {
+	public ResponseMessage logout() {
 		this.userBean.setUser(null);
-		return ResponseCode.SUCCESS;
+		return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), null);
 	}
 	
-	public int validate(String email) {
+	public ResponseMessage validate(String email) {
 		String plainMail = Chiper.decryptText(email);
 		return this.userDAO.validate(plainMail);
 	}

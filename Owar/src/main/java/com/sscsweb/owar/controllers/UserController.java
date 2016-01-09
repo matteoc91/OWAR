@@ -14,8 +14,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sscsweb.owar.entities.User;
-import com.sscsweb.owar.jdbc.dao.UserDAO;
 import com.sscsweb.owar.services.UserService;
+import com.sscsweb.owar.utilities.Constant;
 import com.sscsweb.owar.utilities.ResponseCode;
 import com.sscsweb.owar.utilities.ResponseMessage;
 import com.sscsweb.owar.utilities.ResponseStatus;
@@ -25,19 +25,9 @@ import com.sscsweb.owar.utilities.ResponseStatus;
 public class UserController {
 
 	@Autowired
-	private UserDAO userDAO;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private ServletContext servletContext;
-	
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-	
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
 	
 	public UserService getUserService() {
 		return userService;
@@ -61,8 +51,7 @@ public class UserController {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			User user = mapper.readValue(json, User.class);
-			int result = this.userService.register(user);
-			return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
+			return this.userService.register(user);
 		
 		} catch (JsonParseException e) {
 			
@@ -94,15 +83,14 @@ public class UserController {
 	
 	@RequestMapping(value = "/logout")
 	public ResponseMessage userLogout() {
-		int result = this.userService.logout();
-		return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
+		return this.userService.logout();
 	}
 	
 	@RequestMapping(value = "/validate")
 	public void userValidation(@RequestParam("token") String token, HttpServletResponse response) {
 		this.userService.validate(token);
 		try {
-			response.sendRedirect("http://localhost:8080/" + servletContext.getContextPath() + "?isValidated=true");
+			response.sendRedirect(Constant.DEFAULT_URL + servletContext.getContextPath() + "/validate");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

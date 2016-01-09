@@ -5,10 +5,10 @@ import com.sscsweb.owar.utilities.ResponseMessage;
 
 public interface UserDAO {
 
-	public int registration(User user);
+	public ResponseMessage registration(User user);
 	public ResponseMessage login(User user);
 	public ResponseMessage getUserFromEmail(String email);
-	public int validate(String email);
+	public ResponseMessage validate(String email);
 	public ResponseMessage socialLogin(User user);
 	
 }

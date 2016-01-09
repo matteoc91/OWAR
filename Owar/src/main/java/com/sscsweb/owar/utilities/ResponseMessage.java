@@ -6,6 +6,12 @@ public class ResponseMessage {
 	private String responseStatus;
 	private Object responseObject;
 	
+	public ResponseMessage() {
+		this.responseCode = ResponseCode.SUCCESS;
+		this.responseStatus = ResponseStatus.STATUS_MESSAGE.get(this.responseCode);
+		this.responseObject = null;
+	}
+	
 	public ResponseMessage(int responseCode, String responseStatus, Object responseObject) {
 		this.responseCode = responseCode;
 		this.responseStatus = responseStatus;

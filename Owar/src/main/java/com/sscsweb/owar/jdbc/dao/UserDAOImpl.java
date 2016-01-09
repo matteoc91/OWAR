@@ -21,9 +21,9 @@ public class UserDAOImpl implements UserDAO {
 		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 	}
 
-	public int registration(User user) {
-		if(getUserFromEmail(user.getMail()) != null) {
-			return ResponseCode.ALREADY_EXIST;
+	public ResponseMessage registration(User user) {
+		if(getUserFromEmail(user.getMail()).getResponseCode() == ResponseCode.SUCCESS) {
+			return new ResponseMessage(ResponseCode.ALREADY_EXIST, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.ALREADY_EXIST), null);
 		}
 		
 		String query = "INSERT INTO "
@@ -33,11 +33,12 @@ public class UserDAOImpl implements UserDAO {
 			if(user.getPassword() != null) {
 				user.setPassword(Chiper.encryptPassword(user.getPassword()));
 			}
-			return this.jdbcTemplateObject.update(query, user.getMail(), user.getPassword(), user.getComune_id(), user.getName(), 
+			int result = this.jdbcTemplateObject.update(query, user.getMail(), user.getPassword(), user.getComune_id(), user.getName(), 
 					user.getSurname(), user.getTax_code(), user.getAddress(), user.getHouse_number(), user.getPhone_number(), user.getBirth_date(), 
 					user.getTwitter_id(), user.getValid());
+			return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
 		} catch(Exception e) {
-			return ResponseCode.DB_ACCESS_ERROR;
+			return new ResponseMessage(ResponseCode.DB_ACCESS_ERROR, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.DB_ACCESS_ERROR), null);
 		}
 	}
 	
@@ -79,12 +80,13 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 	
-	public int validate(String email) {
+	public ResponseMessage validate(String email) {
 		String query = "UPDATE user SET valid = 1 WHERE mail = ?";
 		try {
-			return this.jdbcTemplateObject.update(query, email);
+			int result = this.jdbcTemplateObject.update(query, email);
+			return new ResponseMessage(result, ResponseStatus.STATUS_MESSAGE.get(result), null);
 		} catch(Exception e) {
-			return ResponseCode.NOT_FOUND;
+			return new ResponseMessage(ResponseCode.NOT_FOUND, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_FOUND), null);
 		}
 	}
 	
@@ -96,13 +98,13 @@ public class UserDAOImpl implements UserDAO {
 			return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 		} catch(Exception e) {
 			try {
-				int response = registration(user);
-				if(response == ResponseCode.SUCCESS) {
+				ResponseMessage response = registration(user);
+				if(response.getResponseCode() == ResponseCode.SUCCESS) {
 					User dbUser = this.jdbcTemplateObject.queryForObject(
 							query, new Object[] { user.getTwitter_id() }, new UserMapper());
 					return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 				} else {
-					return new ResponseMessage(response, ResponseStatus.STATUS_MESSAGE.get(response), null);
+					return new ResponseMessage(response.getResponseCode(), ResponseStatus.STATUS_MESSAGE.get(response.getResponseCode()), null);
 				}
 			} catch(Exception internalException) {
 				return new ResponseMessage(ResponseCode.DB_ACCESS_ERROR, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.DB_ACCESS_ERROR), null);

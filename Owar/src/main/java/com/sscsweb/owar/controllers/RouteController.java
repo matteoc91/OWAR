@@ -49,6 +49,13 @@ public class RouteController {
         return mv;
     }
     
+    @RequestMapping(value = "/validate")
+    public ModelAndView getHomePageValidated() {
+    	ModelAndView mv = new ModelAndView("homePage");
+    	mv.addObject("isValidated", true);
+        return mv;
+    }
+    
     @RequestMapping(value = "/registrationPage")
     public ModelAndView getRegistrationPage() {
     	ModelAndView mv = new ModelAndView("registrationPage");
