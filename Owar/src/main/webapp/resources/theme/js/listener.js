@@ -31,4 +31,14 @@ $(document).ready(function() {
 		});
 	}
 	
+	if($("#toggleMoreInfo").length > 0) {
+		$("#toggleMoreInfo").click(function() {
+			toggleMoreInfo();
+		});
+	}
+	
+	if($("#userDistrict").length > 0) {
+		getAllDistrict("userDistrict");
+	}
+	
 });

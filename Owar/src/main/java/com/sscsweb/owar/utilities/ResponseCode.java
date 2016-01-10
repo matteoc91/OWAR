@@ -10,5 +10,6 @@ public interface ResponseCode {
 	public static final int WRONG_CREDENTIALS = -5;
 	public static final int MAIL_SEND_FAILURE = -6;
 	public static final int WS_EXCEPTION = -7;
+	public static final int IS_EMPTY = -8;
 	
 }

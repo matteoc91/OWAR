@@ -10,11 +10,12 @@ html, body {
 .wrap {
   min-height: 100%;
   height: auto;
-  margin: 0 auto -60px;
-  padding: 0 0 60px; }
+  margin: 0 auto -80px;
+  padding: 0 0 80px; }
 
 .footer {
-  height: 60px; }
+  padding: 10px;
+  height: 80px; }
 
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
@@ -30,5 +31,7 @@ html, body {
     transform: scale(1) rotate(0deg); }
   to {
     transform: scale(1) rotate(360deg); } }
+.moreInfo {
+  display: none; }
 
 /*# sourceMappingURL=style.css.map */

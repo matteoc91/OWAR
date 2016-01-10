@@ -77,6 +77,31 @@ function registration() {
 					var user = {};
 					user.mail = $("#userMail").val();
 					user.password = $("#userPassword").val();
+					if($("#userName").val().length > 0) {
+						user.name = $("#userName").val();
+					}
+					if($("#userSurname").val().length > 0) {
+						user.surname = $("#userSurname").val();
+					}
+					if($("#userBirthDate").val().length > 0) {
+						user.birth_date = $("#userBirthDate").val();
+					}
+					if($("#userDistrict").val().length > 0) {
+						user.comune_id = $("#userDistrict").find(":selected").attr("name");
+					}
+					if($("#userAddress").val().length > 0) {
+						user.address = $("#userAddress").val();
+					}
+					if($("#userHouseNumber").val().length > 0) {
+						user.house_number = $("#userHouseNumber").val();
+					}
+					if($("#userTaxCode").val().length > 0) {
+						user.tax_code = $("#userTaxCode").val();
+					}
+					if($("#userPhoneNumber").val().length > 0) {
+						user.phone_number = $("#userPhoneNumber").val();
+					}
+					
 					$("#registrationBtn").html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...");
 					regitrationRequest(user, function(res) {
 						$("#registrationBtn").html("Register");
@@ -162,6 +187,46 @@ function logout() {
 			console.log("[ERROR] - unable to logout!");
 			console.log("[ERROR] - ResponseCode: " + res.responseCode);
 			console.log("[ERROR] - ResponseStatus: " + res.responseStatus);
+		}
+	});
+}
+
+function toggleMoreInfo() {
+	var btnClass = $($("#toggleMoreInfo span[class*='glyphicon-menu-']")[0]).attr("class").split(" ");
+	$(btnClass).each(function(index, value) {
+		if(!(value.indexOf("glyphicon-menu-") < 0)) {
+			switch(value) {
+				case "glyphicon-menu-up":
+					$("#toggleMoreInfo").html("<span class='glyphicon glyphicon-menu-down'></span> More info");
+					break;
+				case "glyphicon-menu-down":
+					$("#toggleMoreInfo").html("<span class='glyphicon glyphicon-menu-up'></span> Hide info");
+					break;
+			}
+		}
+	});
+	if($(".moreInfo").length > 0) {
+		$(".moreInfo").toggle(300);
+	}
+}
+
+function getAllDistrict(districtId) {
+	$.ajax({
+		url : $("#contextpath").val()+"/district/all",
+		type : "POST",
+		success : function(res) {
+			if(res.responseCode == 1) {
+				var districtList = res.responseObject;
+				$.each(districtList, function(index, item) {
+					$("#" + districtId).append($("<option>", {
+						text : item.nome_comune,
+						name : item.id
+					}));
+				});
+			}
+		},
+		error : function(res) {
+			
 		}
 	});
 }

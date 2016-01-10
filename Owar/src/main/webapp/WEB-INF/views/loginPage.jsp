@@ -14,22 +14,22 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="row">
-							<div class="col-sm-4">
-								<span class="text-info">Email</span>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="text-info" for="userMail">Email</label>
+									<input type="text" id="userMail" class="userInput form-control">
+								</div>
 							</div>
-							<div class="col-sm-4">
-								<input type="text" id="userMail" class="userInput">
-							</div>
-							<div class="col-sm-4"></div>
+							<div class="col-md-6"></div>
 						</div>
 						<div class="row">
-							<div class="col-md-4">
-								<span class="text-info">Password</span>
-									</div>
-							<div class="col-md-4">
-								<input type="password" id="userPassword" class="userInput">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="text-info" for="userPassword">Password</label>
+									<input type="password" id="userPassword" class="userInput form-control">
+								</div>
 							</div>
-							<div class="col-md-4"></div>
+							<div class="col-md-6"></div>
 						</div>
 						<div class="row">
 							<div class="col-md-6">

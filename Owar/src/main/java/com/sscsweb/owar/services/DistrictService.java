@@ -1,8 +1,8 @@
-package com.sscsweb.owar.jdbc.dao;
+package com.sscsweb.owar.services;
 
 import com.sscsweb.owar.utilities.ResponseMessage;
 
-public interface TbComuniDAO {
+public interface DistrictService {
 
 	public ResponseMessage getAllDistrict();
 	

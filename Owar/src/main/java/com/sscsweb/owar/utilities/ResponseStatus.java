@@ -15,6 +15,7 @@ public class ResponseStatus {
 		STATUS_MESSAGE.put(ResponseCode.WRONG_CREDENTIALS, "Wrong Credentials");
 		STATUS_MESSAGE.put(ResponseCode.MAIL_SEND_FAILURE, "Failure to Send Email");
 		STATUS_MESSAGE.put(ResponseCode.WS_EXCEPTION, "Exception Occurred in the Web Services");
+		STATUS_MESSAGE.put(ResponseCode.IS_EMPTY, "Empty Set");
 	}
 	
 }
