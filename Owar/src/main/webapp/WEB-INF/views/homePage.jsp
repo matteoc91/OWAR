@@ -12,6 +12,9 @@
 		<div class="wrap">
 			<jsp:include page="hiddenComponent.jsp" />
 			<jsp:include page="menuComponent.jsp" />
+			<div class="container">
+				<jsp:include page="carouselComponent.jsp" />
+			</div>
 		</div>
 	    <jsp:include page="footerComponent.jsp" />
 	</body>

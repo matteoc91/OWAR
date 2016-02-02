@@ -20,6 +20,7 @@ public class OfficeMapper implements RowMapper<Office> {
 		office.setId(arg0.getInt("id"));
 		office.setLessor_id(arg0.getInt("lessor_id"));
 		office.setTbComuni_id(arg0.getInt("tbComuni_id"));
+		office.setReserved(arg0.getInt("reserved"));
 		return office;
 	}
 

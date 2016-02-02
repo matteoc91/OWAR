@@ -15,6 +15,7 @@ public class LessorMapper implements RowMapper<Lessor> {
 		lessor.setId(arg0.getInt("id"));
 		lessor.setPiva(arg0.getString("piva"));
 		lessor.setUser_id(arg0.getInt("user_id"));
+		lessor.setFeedback_number(arg0.getInt("feedback_number"));
 		return lessor;
 	}
 

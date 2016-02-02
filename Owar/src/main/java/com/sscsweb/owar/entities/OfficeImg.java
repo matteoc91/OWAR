@@ -3,7 +3,7 @@ package com.sscsweb.owar.entities;
 public class OfficeImg {
 
 	private Integer id;
-	private String img;
+	private byte[] img;
 	private Integer office_id;
 	
 	public Integer getId() {
@@ -14,11 +14,11 @@ public class OfficeImg {
 		this.id = id;
 	}
 
-	public String getImg() {
+	public byte[] getImg() {
 		return img;
 	}
 
-	public void setImg(String img) {
+	public void setImg(byte[] img) {
 		this.img = img;
 	}
 

@@ -6,6 +6,7 @@ public class Lessor {
 	private Double feedback_lessor;
 	private String piva;
 	private Integer user_id;
+	private Integer feedback_number;
 	
 	public Integer getId() {
 		return id;
@@ -37,6 +38,14 @@ public class Lessor {
 
 	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
+	}
+
+	public Integer getFeedback_number() {
+		return feedback_number;
+	}
+
+	public void setFeedback_number(Integer feedback_number) {
+		this.feedback_number = feedback_number;
 	}
 	
 }

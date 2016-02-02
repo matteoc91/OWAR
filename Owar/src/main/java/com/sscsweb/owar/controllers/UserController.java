@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sscsweb.owar.entities.Lessor;
 import com.sscsweb.owar.entities.User;
 import com.sscsweb.owar.services.UserService;
 import com.sscsweb.owar.utilities.Constant;
@@ -92,7 +93,7 @@ public class UserController {
 		try {
 			response.sendRedirect(Constant.DEFAULT_URL + servletContext.getContextPath() + "/validate");
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 		return;
 	}
@@ -113,6 +114,57 @@ public class UserController {
 			
 		}
 		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
+	}
+	
+	@RequestMapping(value = "/getAdminPrivilege")
+	public ResponseMessage getAdminPrivilege() {
+		return this.userService.getAdminPrivilege();
+	}
+	
+	@RequestMapping(value = "/update")
+	public ResponseMessage updateUser(@RequestParam("user") String json) {
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			User user = mapper.readValue(json, User.class);
+			return this.userService.updateUser(user);
+		
+		} catch (JsonParseException e) {
+			
+		} catch (JsonMappingException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
+	}
+	
+	@RequestMapping(value = "/completeProfile")
+	public ResponseMessage completeUserProfile(@RequestParam("lessor") String json) {
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Lessor lessor = mapper.readValue(json, Lessor.class);
+			return this.userService.createLessor(lessor);
+		
+		} catch (JsonParseException e) {
+			
+		} catch (JsonMappingException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return new ResponseMessage(ResponseCode.WS_EXCEPTION, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.WS_EXCEPTION), null);
+	}
+	
+	@RequestMapping(value = "/updateFeedbackTenant")
+	public ResponseMessage updateFeedbackTenant(@RequestParam("feedback") double feedback, @RequestParam("tenantId") int tenantId) {
+		return this.userService.updateFeedbackTenant(feedback, tenantId);
+	}
+	
+	@RequestMapping(value = "/updateFeedbackLessor")
+	public ResponseMessage updateFeedbackLessor(@RequestParam("feedback") double feedback, @RequestParam("lessorId") int lessorId) {
+		return this.userService.updateFeedbackLessor(feedback, lessorId);
 	}
 	
 }

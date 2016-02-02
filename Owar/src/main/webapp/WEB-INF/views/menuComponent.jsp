@@ -8,6 +8,10 @@
 		<div>
 			<ul class="nav navbar-nav navbarToActive">
 				<li><a href="${pageContext.request.contextPath}">Home</a></li>
+				<li><a href="${pageContext.request.contextPath}/officePage">Offices</a></li>
+				<c:if test="${isEditMode}">
+					<li><a href="${pageContext.request.contextPath}/servicePage">Services</a></li>
+				</c:if>
 			</ul>
 			<ul class="nav navbar-nav navbar-right navbarToActive">
 				<li>

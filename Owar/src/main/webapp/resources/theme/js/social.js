@@ -11,7 +11,7 @@ function onLinkedInLogin() {
 			$("#socialLoginSection").html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...");
 			var user = {};
 			user.mail = res.emailAddress;
-			user.twitter_id = res.id;
+			user.linkedin_id = res.id;
 			user.valid = 1;
 			socialLoginRequest(user, function(res) {
 				onLinkedInLogout();

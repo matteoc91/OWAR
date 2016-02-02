@@ -3,6 +3,7 @@ package com.sscsweb.owar.utilities;
 public interface ResponseCode {
 
 	public static final int SUCCESS = 1;
+	public static final int NO_ITEM_SELECTED = 0;
 	public static final int DB_ACCESS_ERROR = -1;
 	public static final int NOT_FOUND = -2;
 	public static final int ALREADY_EXIST = -3;

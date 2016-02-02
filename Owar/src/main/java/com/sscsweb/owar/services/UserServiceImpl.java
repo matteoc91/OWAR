@@ -6,7 +6,13 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sscsweb.owar.entities.Administrator;
+import com.sscsweb.owar.entities.Lessor;
+import com.sscsweb.owar.entities.Tenant;
 import com.sscsweb.owar.entities.User;
+import com.sscsweb.owar.jdbc.dao.AdministratorDAO;
+import com.sscsweb.owar.jdbc.dao.LessorDAO;
+import com.sscsweb.owar.jdbc.dao.TenantDAO;
 import com.sscsweb.owar.jdbc.dao.UserDAO;
 import com.sscsweb.owar.sessionBean.UserBean;
 import com.sscsweb.owar.utilities.Chiper;
@@ -27,6 +33,12 @@ public class UserServiceImpl implements UserService {
 	private UserBean userBean;
 	@Autowired
 	private ServletContext servletContext;
+	@Autowired
+	private AdministratorDAO administratorDAO;
+	@Autowired
+	private TenantDAO tenantDAO;
+	@Autowired
+	private LessorDAO lessorDAO;
 	
 	public UserDAO getUserDAO() {
 		return userDAO;
@@ -60,9 +72,35 @@ public class UserServiceImpl implements UserService {
 		this.servletContext = servletContext;
 	}
 
+	public AdministratorDAO getAdministratorDAO() {
+		return administratorDAO;
+	}
+
+	public void setAdministratorDAO(AdministratorDAO administratorDAO) {
+		this.administratorDAO = administratorDAO;
+	}
+
+	public TenantDAO getTenantDAO() {
+		return tenantDAO;
+	}
+
+	public void setTenantDAO(TenantDAO tenantDAO) {
+		this.tenantDAO = tenantDAO;
+	}
+
+	public LessorDAO getLessorDAO() {
+		return lessorDAO;
+	}
+
+	public void setLessorDAO(LessorDAO lessorDAO) {
+		this.lessorDAO = lessorDAO;
+	}
+
 	public ResponseMessage login(User user) {
 		ResponseMessage reponseMessage = this.userDAO.login(user);
 		this.userBean.setUser((User) reponseMessage.getResponseObject());
+		this.setAdminBean();
+		this.setTenantBean();
 		return reponseMessage;
 	}
 
@@ -85,6 +123,12 @@ public class UserServiceImpl implements UserService {
 	
 	public ResponseMessage logout() {
 		this.userBean.setUser(null);
+		this.userBean.setTenant(null);
+		this.userBean.setLessor(null);
+		this.userBean.setAdministrator(null);
+		this.userBean.setAdminMode(false);
+		this.userBean.setLessorMode(false);
+		this.userBean.setLessorMode(false);
 		return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), null);
 	}
 	
@@ -96,6 +140,103 @@ public class UserServiceImpl implements UserService {
 	public ResponseMessage socialLogin(User user) {
 		ResponseMessage responseMessage = this.userDAO.socialLogin(user);
 		this.userBean.setUser((User) responseMessage.getResponseObject());
+		this.setAdminBean();
+		this.setTenantBean();
+		this.setLessorBean();
+		return responseMessage;
+	}
+	
+	public ResponseMessage getAdminPrivilege() {
+		if(this.userBean.getAdministrator() != null) {
+			this.userBean.setAdminMode(true);
+			return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), null);
+		}
+		return new ResponseMessage(ResponseCode.NOT_VALID, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_VALID), null);
+	}
+	
+	private void setAdminBean() {
+		ResponseMessage responseMessage = this.administratorDAO.getAdministrator(this.userBean.getUser().getId());
+		this.userBean.setAdministrator((Administrator) responseMessage.getResponseObject());
+	}
+	
+	private void setTenantBean() {
+		if(this.userBean.checkTenant()) {
+			ResponseMessage responseMessage = this.tenantDAO.getTenant(this.userBean.getUser().getId());
+			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
+		}
+	}
+	
+	private void setLessorBean() {
+		if(this.userBean.getTenant() != null) {
+			ResponseMessage responseMessage = this.lessorDAO.getLessor(this.userBean.getUser().getId());
+			this.userBean.setLessor((Lessor) responseMessage.getResponseObject());
+		}
+	}
+	
+	public ResponseMessage getTenant(Integer userId) {
+		if(this.userBean.getTenant() != null) {
+			return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), this.userBean.getTenant());
+		}
+		Tenant tenant = new Tenant();
+		tenant.setUser_id(userId);
+		ResponseMessage responseMessage = this.tenantDAO.createTenant(tenant);
+		if(responseMessage.getResponseCode() == ResponseCode.SUCCESS) {
+			responseMessage = this.tenantDAO.getTenant(userId);
+			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
+		}
+		return responseMessage;
+	}
+	
+	public ResponseMessage createTenant(Tenant tenant) {
+		ResponseMessage responseMessage = this.tenantDAO.createTenant(tenant);
+		this.setTenantBean();
+		return responseMessage;
+	}
+	
+	public ResponseMessage updateUser(User user) {
+		ResponseMessage responseMessage = this.userDAO.update(user);
+		if(responseMessage.getResponseCode() == ResponseCode.SUCCESS) {
+			responseMessage = this.userDAO.getUserFromEmail(user.getMail());
+			this.userBean.setUser((User) responseMessage.getResponseObject());
+		}
+		return responseMessage;
+	}
+	
+	public ResponseMessage createLessor(Lessor lessor) {
+		ResponseMessage responseMessage = this.lessorDAO.createLessor(lessor);
+		this.setLessorBean();
+		return responseMessage;
+	}
+	
+	public ResponseMessage updateFeedbackTenant(double feedback, Integer tenantId) {
+		ResponseMessage responseMessage = this.tenantDAO.getTenantFromId(tenantId);
+		Tenant tenant = (Tenant) responseMessage.getResponseObject();
+		Integer feedbackNumber = tenant.getFeedback_number();
+		Double feedbackValue = tenant.getFeedback_tenant();
+		if(feedbackNumber == null || feedbackNumber < 1) {
+			feedbackNumber = 1;
+			feedbackValue = feedback;
+		} else {
+			feedbackValue = (feedbackNumber*feedbackValue+feedback)/(feedbackNumber+1);
+			feedbackNumber++;
+		}
+		responseMessage = this.tenantDAO.updateFeedback(feedbackValue, feedbackNumber, tenantId);
+		return responseMessage;
+	}
+	
+	public ResponseMessage updateFeedbackLessor(double feedback, Integer lessorId) {
+		ResponseMessage responseMessage = this.lessorDAO.getLessorFromId(lessorId);
+		Lessor lessor = (Lessor) responseMessage.getResponseObject();
+		Integer feedbackNumber = lessor.getFeedback_number();
+		Double feedbackValue = lessor.getFeedback_lessor();
+		if(feedbackNumber == null || feedbackNumber < 1) {
+			feedbackNumber = 1;
+			feedbackValue = feedback;
+		} else {
+			feedbackValue = (feedbackNumber*feedbackValue+feedback)/(feedbackNumber+1);
+			feedbackNumber++;
+		}
+		responseMessage = this.lessorDAO.updateFeedback(feedbackValue, feedbackNumber, lessorId);
 		return responseMessage;
 	}
 

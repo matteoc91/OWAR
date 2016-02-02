@@ -15,7 +15,7 @@ public class User {
 	private Integer house_number;
 	private String phone_number;
 	private Date birth_date;
-	private String twitter_id;
+	private String linkedin_id;
 	private Integer valid;
 	
 	public Integer getId() {
@@ -106,12 +106,12 @@ public class User {
 		this.birth_date = birth_date;
 	}
 
-	public String getTwitter_id() {
-		return twitter_id;
+	public String getLinkedin_id() {
+		return linkedin_id;
 	}
 
-	public void setTwitter_id(String twitter_id) {
-		this.twitter_id = twitter_id;
+	public void setLinkedin_id(String linkedin_id) {
+		this.linkedin_id = linkedin_id;
 	}
 
 	public Integer getValid() {

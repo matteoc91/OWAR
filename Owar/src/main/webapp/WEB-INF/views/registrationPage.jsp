@@ -70,8 +70,8 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="text-info" for="userDistrict">District:</label>
-									<select class="form-control" id="userDistrict" class="userInput form-control">
+									<label class="text-info" for="userDistrict">District</label>
+									<select id="userDistrict" class="userInput form-control">
 										<option></option>
 									</select>
 								</div>

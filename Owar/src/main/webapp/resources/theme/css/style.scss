@@ -43,3 +43,13 @@ html, body {
 .moreInfo {
 	display: none;
 }
+
+.defaultHide {
+	display: none;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+	width: 70%;
+	margin: 0 auto;
+}

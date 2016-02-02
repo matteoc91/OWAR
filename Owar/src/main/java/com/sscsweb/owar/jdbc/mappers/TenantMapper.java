@@ -14,6 +14,7 @@ public class TenantMapper implements RowMapper<Tenant> {
 		tenant.setFeedback_tenant(arg0.getDouble("feedback_tenant"));
 		tenant.setId(arg0.getInt("id"));
 		tenant.setUser_id(arg0.getInt("user_id"));
+		tenant.setFeedback_number(arg0.getInt("feedback_number"));
 		return tenant;
 	}
 

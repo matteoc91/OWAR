@@ -10,5 +10,7 @@ public interface UserDAO {
 	public ResponseMessage getUserFromEmail(String email);
 	public ResponseMessage validate(String email);
 	public ResponseMessage socialLogin(User user);
+	public ResponseMessage update(User user);
+	public ResponseMessage getUserFromId(Integer userId);
 	
 }

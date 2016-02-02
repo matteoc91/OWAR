@@ -11,4 +11,12 @@ $(document).ready(function() {
 				"now you are ready to login.");
 		$("#genericModal").modal("toggle");
 	}
+	
+	if($("#lessorData").length > 0) {
+		if(Session.LessorBean != null) {
+			$("#lessorDataComplete").removeClass("defaultHide");
+		} else {
+			$("#lessorData").removeClass("defaultHide");
+		}
+	}
 });

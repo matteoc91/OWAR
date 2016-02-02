@@ -13,6 +13,7 @@ public class Office {
 	private String description;
 	private Integer lessor_id;
 	private Integer tbComuni_id;
+	private Integer reserved;
 	
 	public Integer getId() {
 		return id;
@@ -84,6 +85,14 @@ public class Office {
 
 	public void setTbComuni_id(Integer tbComuni_id) {
 		this.tbComuni_id = tbComuni_id;
+	}
+
+	public Integer getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(Integer reserved) {
+		this.reserved = reserved;
 	}
 	
 }

@@ -22,7 +22,7 @@ public class UserMapper implements RowMapper<User> {
 		user.setPhone_number(arg0.getString("phone_number"));
 		user.setSurname(arg0.getString("surname"));
 		user.setTax_code(arg0.getString("tax_code"));
-		user.setTwitter_id(arg0.getString("twitter_id"));
+		user.setLinkedin_id(arg0.getString("linkedin_id"));
 		user.setValid(arg0.getInt("valid"));
 		return user;
 	}

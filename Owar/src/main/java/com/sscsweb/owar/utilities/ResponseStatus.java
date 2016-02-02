@@ -8,6 +8,7 @@ public class ResponseStatus {
 	
 	static {
 		STATUS_MESSAGE.put(ResponseCode.SUCCESS, "Operation Success");
+		STATUS_MESSAGE.put(ResponseCode.NO_ITEM_SELECTED, "No Item Selected");
 		STATUS_MESSAGE.put(ResponseCode.DB_ACCESS_ERROR, "DB Access Error");
 		STATUS_MESSAGE.put(ResponseCode.NOT_FOUND, "Not Found");
 		STATUS_MESSAGE.put(ResponseCode.ALREADY_EXIST, "Already Exist");
