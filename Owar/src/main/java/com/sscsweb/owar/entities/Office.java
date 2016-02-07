@@ -2,6 +2,9 @@ package com.sscsweb.owar.entities;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Office {
 
 	private Integer id;

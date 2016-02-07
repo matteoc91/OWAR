@@ -283,9 +283,13 @@ function setOfficePagination() {
 				case 1:		// SUCCESS
 					var numOfPage = Math.ceil(res.responseObject/objPerPage);
 					$("#numOfPage").val(numOfPage);
-					if(numOfPage > 1) {
-						$("#officePagination").html("1 <span class='glyphicon glyphicon-menu-right' onclick='getOffices(2,"+objPerPage+")'></span>");
-					}
+					/*if(numOfPage > 1) {
+						var pager = "<ul class='pager'>";
+						pager += "<li>1</li>"
+						pager += "<li><span class='glyphicon glyphicon-menu-right' onclick='getOffices(2,"+objPerPage+")'>Next</span></li>";
+						pager += "</ul>";
+						$("#officePagination").html(pager);
+					}*/
 					getOffices(1, objPerPage);
 					break;
 				case -8:	// EMPTY
@@ -315,16 +319,17 @@ function getOffices(page, objPerPage) {
 			switch(res.responseCode) {
 				case 1:		// SUCCESS
 					$("#numOfPage").val(Math.ceil(res.responseObject["numOfOffices"]/objPerPage));
-					var param = "";
+					var pager = "<ul class='pagination'>";
 					if(page > 1) {
-						param += "<span class='glyphicon glyphicon-menu-left' onclick='getOffices("+(page-1)+","+objPerPage+")'></span>";
+						pager += "<li><span class='defaultClick' onclick='getOffices("+(page-1)+","+objPerPage+")'>Previous</span></li>";
 					}
-					param += page;
+					pager += "<li class='active'><span>"+page+"</span></li>";
 					if(page < $("#numOfPage").val()) {
-						param += "<span class='glyphicon glyphicon-menu-right' onclick='getOffices("+(page+1)+","+objPerPage+")'></span>";
+						pager += "<li><span class='defaultClick' onclick='getOffices("+(page+1)+","+objPerPage+")'>Next</span></li>";
 					}
+					pager += "</ul>"
 					$("#officePagination").html("");
-					$("#officePagination").html(param);
+					$("#officePagination").html(pager);
 					setOfficesInPage(res.responseObject["offices"]);
 					break;
 				case -8:	// EMPTY
@@ -346,7 +351,7 @@ function setOfficesInPage(officesList) {
 	$.each(officesList, function(index, element) {
 		var location = getLocationString(element.tbComuni_id);
 		
-		param += "<div class='row singleOffice' onclick='getOfficeDetail(" + element.id + ")'>";
+		param += "<div class='row singleOffice jumbotron defaultClick' onclick='getOfficeDetail(" + element.id + ")'>";
 		
 		//param += "<div class='col-md-6'>";
 		/*
@@ -357,20 +362,24 @@ function setOfficesInPage(officesList) {
 		param += "<div class='col-md-12'>";
 		
 		param += "<div class='row'>";
-		param += "<div class='col-md-12 officeDescription'>";
+		param += "<div class='col-md-12 officeDescription text-capitalize'>";
+		param += "<strong>";
 		param += element.description;
+		param += "</strong>";
 		param += "</div>";
 		param += "</div>";
 		
 		param += "<div class='row'>";
 		param += "<div class='col-md-12 officeAddress'>";
+		param += "<em>";
 		param += element.address + " " + element.home_number + ", " + location;
+		param += "</em>";
 		param += "</div>";
 		param += "</div>";
 		
 		param += "<div class='row'>";
 		param += "<div class='col-md-12 officePrice'>";
-		param += element.daily_price + " EURO";
+		param += element.daily_price + " <abbr title='EURO'>&euro;</abbr>";
 		param += "</div>";
 		param += "</div>";
 		
@@ -594,6 +603,7 @@ function populatePage() {
 							$(itemList[index]).closest(".imgDivContainer").removeClass("defaultHide");
 						});
 					}
+					getOfficeServices("servicesList");
 				} else {
 					displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 				}
@@ -984,4 +994,32 @@ function completeProfile() {
 function displayFeedbackForm(event) {
 	$("#officeRefFeedback").val($(event.target).attr("name"));
 	$(".feedbackForm").removeClass("defaultHide");
+}
+
+function getOfficeServices(container) {
+	$.ajax({
+		url : $("#contextpath").val()+"/office/getServices",
+		type : "POST",
+		data : {
+			officeId : Session.OfficeBean.id
+		},
+		success : function(res) {
+			if(res.responseCode == 1) {
+				var servicesList = "";
+				$.each(res.responseObject, function(index, item) {
+					servicesList += "<div class='row singleService'>";
+					servicesList += "<div class='col-md-12'>";
+					
+					servicesList += item.service.type + " - " + item.service.description + " (" + item.officeHasService.num_service + ")";
+					
+					servicesList += "</div>"
+					servicesList += "</div>"
+				});
+				$("#"+container).html(servicesList);
+			}
+		},
+		error : function(res) {
+			
+		}
+	});
 }

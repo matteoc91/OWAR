@@ -69,4 +69,18 @@ public class OfficeHasServiceDAOImpl implements OfficeHasServiceDAO {
 		}
 	}
 	
+	public ResponseMessage getMap(Integer officeId, Integer serviceId) {
+		String query = "SELECT * FROM office_has_service WHERE office_id=? AND service_id=?";
+		try {
+			OfficeHasService officeHasService = this.jdbcTemplateObject.queryForObject(query, 
+					new Object[] {officeId, serviceId}, new OfficeHasServiceMapper());
+			if(officeHasService != null) {
+				return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), officeHasService);
+			}
+			return new ResponseMessage(ResponseCode.NOT_FOUND, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.NOT_FOUND), null);
+		} catch(Exception e) {
+			return new ResponseMessage(ResponseCode.DB_ACCESS_ERROR, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.DB_ACCESS_ERROR), null);
+		}
+	}
+	
 }

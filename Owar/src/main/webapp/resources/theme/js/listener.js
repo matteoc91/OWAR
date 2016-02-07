@@ -188,4 +188,8 @@ $(document).ready(function() {
 		});
 	}
 	
+	/*if($("#servicesList").length > 0) {
+		getOfficeServices("servicesList");
+	}*/
+	
 });

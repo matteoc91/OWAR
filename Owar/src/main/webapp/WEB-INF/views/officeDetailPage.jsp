@@ -76,6 +76,9 @@
 							</div>
 						</div>
 						<div class="row">
+							<div class="col-md-12" id="servicesList"></div>
+						</div>
+						<div class="row">
 							<div class="col-md-12">
 								<button type="button" class="btn btn-default" id="displayFeedbackBtn">Display feedback</button>
 								<c:if test="${checkTenant}">

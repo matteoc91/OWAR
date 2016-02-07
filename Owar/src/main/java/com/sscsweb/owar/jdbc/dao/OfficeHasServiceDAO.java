@@ -10,5 +10,6 @@ public interface OfficeHasServiceDAO {
 	public ResponseMessage getServicesId(Integer officeId);
 	public ResponseMessage addMap(OfficeHasService officeHasService);
 	public ResponseMessage getOfficesId(List<OfficeHasService> officeHasServiceList);
+	public ResponseMessage getMap(Integer officeId, Integer serviceId);
 
 }

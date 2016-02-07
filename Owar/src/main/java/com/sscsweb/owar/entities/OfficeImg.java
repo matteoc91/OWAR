@@ -1,5 +1,8 @@
 package com.sscsweb.owar.entities;
 
+import javax.persistence.Entity;
+
+@Entity
 public class OfficeImg {
 
 	private Integer id;

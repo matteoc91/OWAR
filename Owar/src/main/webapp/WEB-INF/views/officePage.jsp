@@ -20,7 +20,7 @@
 				<div class="row">
 					<div class="col-md-6 filterContainer">
 						<div class="row locationFilter">
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="form-group first-group">
 									<label class="text-info" for="officeFilterDistrict">District:</label>
 									<select id="officeFilterDistrict" class="userInput form-control locationFilterInner">
@@ -28,10 +28,10 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-6"></div>
+							<div class="col-md-4"></div>
 						</div>
 						<div class="row locationFilter">
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="form-group second-group">
 									<label class="text-info" for="officeFilterTown">Town:</label>
 									<select id="officeFilterTown" class="userInput form-control locationFilterInner">
@@ -39,10 +39,10 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-6"></div>
+							<div class="col-md-4"></div>
 						</div>
 						<div class="row locationFilter">
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="form-group third-group">
 									<label class="text-info" for="officeFilterRegion">Region:</label>
 									<select id="officeFilterRegion" class="userInput form-control locationFilterInner">
@@ -50,7 +50,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-6"></div>
+							<div class="col-md-4"></div>
 						</div>
 						<div class="row">
 							<div id="serviceFilterContainer" class="col-md-12"></div>
@@ -79,9 +79,9 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-8"></div>
-									<div class="col-md-4">
-										<span class="text-primary" id="officePagination"></span>
+									<div class="col-md-6"></div>
+									<div class="col-md-6">
+										<span class="text-primary  alignRight" id="officePagination"></span>
 									</div>
 								</div>
 								<div class="row">

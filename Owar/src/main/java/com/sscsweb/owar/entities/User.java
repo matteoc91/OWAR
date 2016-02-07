@@ -2,6 +2,9 @@ package com.sscsweb.owar.entities;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+
+@Entity
 public class User {
 
 	private Integer id;

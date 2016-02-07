@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/jee
+        http://www.springframework.org/schema/jee/spring-jee.xsd">
+        
+        
+        
+        <bean id="AdministratorDAOImpl" class="com.sscsweb.owar.jdbc.dao.AdministratorDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="FeedbackDAOImpl" class="com.sscsweb.owar.jdbc.dao.FeedbackDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="LessorDAOImpl" class="com.sscsweb.owar.jdbc.dao.LessorDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="OfficeDAOImpl" class="com.sscsweb.owar.jdbc.dao.OfficeDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="OfficeHasServiceDAOImpl" class="com.sscsweb.owar.jdbc.dao.OfficeHasServiceDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="OfficeHasTenantDAOImpl" class="com.sscsweb.owar.jdbc.dao.OfficeHasTenantDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="OfficeImgDAOImpl" class="com.sscsweb.owar.jdbc.dao.OfficeImgDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="ServiceDAOImpl" class="com.sscsweb.owar.jdbc.dao.ServiceDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="TbComuniDAOImpl" class="com.sscsweb.owar.jdbc.dao.TbComuniDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="TbProvinceDAOImpl" class="com.sscsweb.owar.jdbc.dao.TbProvinceDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="TbRegioniDAOImpl" class="com.sscsweb.owar.jdbc.dao.TbRegioniDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="TenantDAOImpl" class="com.sscsweb.owar.jdbc.dao.TenantDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+	</bean>
+	<bean id="UserDAOImpl" class="com.sscsweb.owar.jdbc.dao.UserDAOImpl">
+      <property name="dataSource"  ref="dataSource" />
+      <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+        
+
+</beans>
