@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
 		this.userBean.setUser((User) reponseMessage.getResponseObject());
 		this.setAdminBean();
 		this.setTenantBean();
+		this.setLessorBean();
 		return reponseMessage;
 	}
 
@@ -181,6 +182,9 @@ public class UserServiceImpl implements UserService {
 		tenant.setUser_id(userId);
 		ResponseMessage responseMessage = this.tenantDAO.createTenant(tenant);
 		if(responseMessage.getResponseCode() == ResponseCode.SUCCESS) {
+			responseMessage = this.tenantDAO.getTenant(userId);
+			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
+		} else {
 			responseMessage = this.tenantDAO.getTenant(userId);
 			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
 		}
