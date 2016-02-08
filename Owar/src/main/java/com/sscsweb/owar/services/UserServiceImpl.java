@@ -180,12 +180,12 @@ public class UserServiceImpl implements UserService {
 		}
 		Tenant tenant = new Tenant();
 		tenant.setUser_id(userId);
-		ResponseMessage responseMessage = this.tenantDAO.createTenant(tenant);
-		if(responseMessage.getResponseCode() == ResponseCode.SUCCESS) {
-			responseMessage = this.tenantDAO.getTenant(userId);
-			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
-		} else {
-			responseMessage = this.tenantDAO.getTenant(userId);
+		ResponseMessage responseMessage = this.tenantDAO.getTenant(userId);
+		if(responseMessage.getResponseCode() != ResponseCode.SUCCESS) {
+			responseMessage = this.tenantDAO.createTenant(tenant);
+			if(responseMessage.getResponseCode() == ResponseCode.SUCCESS) {
+				responseMessage = this.tenantDAO.getTenant(userId);
+			}
 			this.userBean.setTenant((Tenant) responseMessage.getResponseObject());
 		}
 		return responseMessage;
