@@ -53,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
 			User dbUser = this.jdbcTemplateObject.queryForObject(
 					query, new Object[] { param }, new UserMapper());
 			if(dbUser != null && dbUser.getValid() != null && dbUser.getValid() == 1) {
-				if(dbUser.getLinkedin_id() != null) {
+				if(dbUser.getLinkedin_id() != null && user.getLinkedin_id() != null) {
 					return new ResponseMessage(ResponseCode.SUCCESS, ResponseStatus.STATUS_MESSAGE.get(ResponseCode.SUCCESS), dbUser);
 				}
 				else if(Chiper.checkPassword(user.getPassword(), dbUser.getPassword())) {

@@ -156,8 +156,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private void setAdminBean() {
-		ResponseMessage responseMessage = this.administratorDAO.getAdministrator(this.userBean.getUser().getId());
-		this.userBean.setAdministrator((Administrator) responseMessage.getResponseObject());
+		if(this.userBean.getUser() != null) {
+			ResponseMessage responseMessage = this.administratorDAO.getAdministrator(this.userBean.getUser().getId());
+			this.userBean.setAdministrator((Administrator) responseMessage.getResponseObject());
+		}
 	}
 	
 	private void setTenantBean() {
