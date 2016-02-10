@@ -283,13 +283,6 @@ function setOfficePagination() {
 				case 1:		// SUCCESS
 					var numOfPage = Math.ceil(res.responseObject/objPerPage);
 					$("#numOfPage").val(numOfPage);
-					/*if(numOfPage > 1) {
-						var pager = "<ul class='pager'>";
-						pager += "<li>1</li>"
-						pager += "<li><span class='glyphicon glyphicon-menu-right' onclick='getOffices(2,"+objPerPage+")'>Next</span></li>";
-						pager += "</ul>";
-						$("#officePagination").html(pager);
-					}*/
 					getOffices(1, objPerPage);
 					break;
 				case -8:	// EMPTY
@@ -353,13 +346,11 @@ function setOfficesInPage(officesList) {
 		
 		param += "<div class='row singleOffice jumbotron defaultClick' onclick='getOfficeDetail(" + element.id + ")'>";
 		
-		//param += "<div class='col-md-6'>";
-		/*
-		 * TODO - add image
-		 * */
-		//param += "</div>";
+		param += "<div class='col-md-4'>";
+		param += "<img src='" + $("#contextpath").val() + "/resources/img/office_icon.jpg' alt='Office Icon' class='img-responsive'>"
+		param += "</div>";
 		
-		param += "<div class='col-md-12'>";
+		param += "<div class='col-md-8'>";
 		
 		param += "<div class='row'>";
 		param += "<div class='col-md-12 officeDescription text-capitalize'>";
@@ -533,12 +524,30 @@ function createNewService() {
 	});
 }
 
-function setServicePagination() {
+function setServicePagination(container) {
 	$.ajax({
 		url : $("#contextpath").val()+"/office/serviceInPage",
 		type : "POST",
 		success : function(res) {
-			
+			if(res.responseCode == 1) {
+				var servicesList = res.responseObject;
+				var param = "<div class='row'><div class='col-md-12'>";
+				$.each(servicesList, function(index, item) {
+					param += "<div class='row singleService boxShadowDefault jumbotron'>";
+					
+					param += "<div class='col-md-2'>"
+					param += "<img src='" + $("#contextpath").val() + "/resources/img/service_icon.jpg' alt='Service Icon' class='img-responsive'>";
+					param += "</div>"
+					
+					param += "<div class='col-md-8'>";
+					param += item.type + " - " + item.description;
+					param += "</div>";
+					
+					param += "</div>";
+				});
+				param += "</div></div>";
+				$("#"+container).html(param);
+			}
 		},
 		error : function(res) {
 			
@@ -600,10 +609,12 @@ function populatePage() {
 					if(imageList != null) {
 						$.each(imageList, function(index, item) {
 							$(itemList[index]).attr("src", $("#contextpath").val()+"/office/displayImage/"+item);
+							$(itemList[index]).attr("class", "img-responsive");
+							$(itemList[index]).closest(".thumbnail").attr("href", $("#contextpath").val()+"/office/displayImage/"+item);
 							$(itemList[index]).closest(".imgDivContainer").removeClass("defaultHide");
 						});
 					}
-					getOfficeServices("servicesList");
+					getOfficeServices("officeServicesList");
 				} else {
 					displayErrorMessage("<strong>Error!</strong> " + res.responseStatus + ".");
 				}
@@ -665,24 +676,24 @@ function displayFeedback() {
 					var feedbackList = res.responseObject;
 					var param = "<div class='col-md-12'>";
 					$.each(feedbackList, function(index, item) {
-						param += "<div class='row singleFeedback'>";
+						param += "<div class='row singleFeedback jumbotron'>";
 						param += "<div class='col-md-12'>";
 						
 						param += "<div class='row singleFeedbackValue'>";
-						param += "<div class='col-md-6'>";
-						param += "<span class='text-info'>Value: </span>";
+						param += "<div class='col-md-4'>";
+						param += "<span class='text-muted'>Value: </span>";
 						param += "</div>";
-						param += "<div class='col-md-6'>";
-						param += "<span class='text-info'>"+item.office_valuation+"</span>";
+						param += "<div class='col-md-8'>";
+						param += "<strong><span>"+item.office_valuation+"</span></strong>";
 						param += "</div>";
 						param += "</div>";
 						
 						param += "<div class='row singleFeedbackComment'>";
-						param += "<div class='col-md-6'>";
-						param += "<span class='text-info'>Comment: </span>";
+						param += "<div class='col-md-4'>";
+						param += "<span class='text-muted'>Comment: </span>";
 						param += "</div>";
-						param += "<div class='col-md-6'>";
-						param += "<span class='text-info'>"+item.comment+"</span>";
+						param += "<div class='col-md-8'>";
+						param += "<strong><span>"+item.comment+"</span></strong>";
 						param += "</div>";
 						param += "</div>";
 						
@@ -890,43 +901,39 @@ function getTenantOffices() {
 function setTenantOffices(officeList, containerClass) {
 	param = "";
 	$.each(officeList, function(index, item) {
-		param += "<div class='row singleOffice'>";
+		param += "<div class='row singleOffice jumbotron'>";
 		
-		param += "<div class='col-md-6' onclick='getOfficeDetail(" + item.office_id + ")'>";
-		
-		param += "<div class='row'>";
-		param += "<div class='col-md-12'>Office ID: <span class='officeId text-info'>";
-		param += item.office_id;
-		param += "</span></div>";
-		param += "</div>";
+		param += "<div class='col-md-8 defaultClick' onclick='getOfficeDetail(" + item.office_id + ")'>";
 		
 		param += "<div class='row'>";
-		param += "<div class='col-md-12'>Begin rent date: <span class='officeBeginDate text-info'>";
-		param += getDateFromTimeStamp(item.date_begin);
-		param += "</span></div>";
+		param += "<div class='col-md-6'><span class='text-muted'>Office ID:</span></div>";
+		param += "<div class='col-md-6'><strong><span class='officeId'>" + item.office_id +"</span></strong></div>";
 		param += "</div>";
 		
 		param += "<div class='row'>";
-		param += "<div class='col-md-12'>End rent date: <span class='officeEndDate text-info'>";
-		param += getDateFromTimeStamp(item.date_end);
-		param += "</span></div>";
+		param += "<div class='col-md-6'><span class='text-muted'>Begin rent date:</span></div>";
+		param += "<div class='col-md-6'><strong><span class='officeBeginDate'>" + getDateFromTimeStamp(item.date_begin) +"</span></strong></div>";
+		param += "</div>";
+		
+		param += "<div class='row'>";
+		param += "<div class='col-md-6'><span class='text-muted'>End rent date:</span></div>";
+		param += "<div class='col-md-6'><strong><span class='officeEndDate'>" + getDateFromTimeStamp(item.date_end) +"</span></strong></div>";
 		param += "</div>";
 		
 		param += "</div>";
 		
-		param += "<div class='col-md-6'>";
+		param += "<div class='col-md-4'>";
 		
 		var link = $("#contextpath").val()+"/office/QRCode/"+item.office_id+"/"+item.tenant_id+"/"+item.date_begin+"/"+item.date_end;
 		
 		param += "<div class='row'>";
 		param += "<div class='col-md-12'>";
-		param += "<a href='"+link+"' target='_blank' class='btn btn-info'>Generate QRCode</a>"
-		param += "</div>";
-		param += "</div>";
 		
-		param += "<div class='row'>";
-		param += "<div class='col-md-12'>";
+		param += "<div class='btn-group-vertical'>";
+		param += "<a href='"+link+"' target='_blank' class='btn btn-info'>Generate QRCode</a>"
 		param += "<button type='button' class='btn btn-primary' name='"+item.office_id+"' onclick='displayFeedbackForm(event)'>Leave a feedback</button>";
+		param += "</div>"
+		
 		param += "</div>";
 		param += "</div>";
 		
@@ -1005,16 +1012,21 @@ function getOfficeServices(container) {
 		},
 		success : function(res) {
 			if(res.responseCode == 1) {
-				var servicesList = "";
+				var servicesList = "<div class='jumbotron'>";
 				$.each(res.responseObject, function(index, item) {
-					servicesList += "<div class='row singleService'>";
-					servicesList += "<div class='col-md-12'>";
+					servicesList += "<div class='row singleService boxShadowDefault'>";
 					
+					servicesList += "<div class='col-md-4'>";
+					servicesList += "<img src='" + $("#contextpath").val() + "/resources/img/service_icon.jpg' alt='Service Icon' class='img-responsive'>";
+					servicesList += "</div>"
+					
+					servicesList += "<div class='col-md-8'>";
 					servicesList += item.service.type + " - " + item.service.description + " (" + item.officeHasService.num_service + ")";
-					
-					servicesList += "</div>"
-					servicesList += "</div>"
+					servicesList += "</div>";
+						
+					servicesList += "</div>";
 				});
+				servicesList += "</div>";
 				$("#"+container).html(servicesList);
 			}
 		},

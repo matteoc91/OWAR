@@ -17,7 +17,7 @@
 				<li>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 						<c:if test="${userBean != 'null'}">
-							<span class="text-info" id="userSessionHead"></span>
+							<span class="refUserMailHead" id="userSessionHead"></span>
 						</c:if>
 						<c:if test="${userBean == 'null'}">
 							<span class="glyphicon glyphicon-user"></span>

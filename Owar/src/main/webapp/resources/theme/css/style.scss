@@ -3,6 +3,9 @@ $footer_pagging : 10px;
 $body_color : #95F3FC;
 $carousel_height : 500px;
 $default_black : #000;
+$default_white : #FFF;
+$padding_left_desc: 20px;
+$default_margin_top: 20px;
 
 html, body {
 	height: 100%;
@@ -63,6 +66,23 @@ html, body {
 
 .alignRight {
 	float: right;
+}
+
+.officeDescriptionInput {
+  padding-left: $padding_left_desc;
+}
+
+.refUserMailHead {
+  color: $default_white;
+}
+
+.boxShadowDefault {
+  box-shadow: 1px 1px 1px $default_black;
+  padding: 5px;
+}
+
+.defaultMarginTop {
+  margin-top: $default_margin_top;
 }
 
 /* NAVBAR DEFINITION */

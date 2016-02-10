@@ -86,7 +86,7 @@ $(document).ready(function() {
 	}
 	
 	if($("#servicesList").length > 0) {
-		setServicePagination();
+		setServicePagination("servicesList");
 	}
 	
 	if($("#addServiceBtn").length > 0) {
